@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'ForeasyComponents_Example' do
+  pod 'ForeasyComponents', :path => '../'
+
+  target 'ForeasyComponents_Tests' do
+    inherit! :search_paths
+
+    pod 'FBSnapshotTestCase' , '~> 2.1.4'
+  end
+end
