@@ -1,8 +1,8 @@
 {
   "name": "ForeasyComponents",
   "version": "0.1.0",
-  "summary": "A short description of ForeasyComponents.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "和易科技有限公司项目组件（iOS-Swift）",
+  "description": "TODO: Add long description of the pod here.\n#和易科技有限公司项目组件（iOS-Swift）\n#依赖库 'SwiftyExtensions'\n#请在 Podfile 文件中添加:\n#source 'https://github.com/diaoshihao/Specs.git'\n#source 'https://github.com/CocoaPods/Specs.git'",
   "homepage": "https://github.com/diaoshihao/ForeasyComponents",
   "license": {
     "type": "MIT",
@@ -16,7 +16,14 @@
     "tag": "0.1.0"
   },
   "platforms": {
-    "ios": "8.0"
+    "ios": "9.0"
   },
-  "source_files": "ForeasyComponents/Classes/**/*"
+  "swift_versions": "5.0",
+  "source_files": "Source/**/*",
+  "dependencies": {
+    "SwiftyExtensions": [
+
+    ]
+  },
+  "swift_version": "5.0"
 }

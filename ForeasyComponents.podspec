@@ -19,11 +19,11 @@ Pod::Spec.new do |s|
 
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
-和易科技有限公司项目组件（iOS-Swift）
-依赖库 'SwiftyExtensions'
-请在 Podfile 文件中添加:
-source 'https://github.com/diaoshihao/Specs.git'
-source 'https://github.com/CocoaPods/Specs.git'
+#和易科技有限公司项目组件（iOS-Swift）
+#依赖库 'SwiftyExtensions'
+#请在 Podfile 文件中添加:
+#source 'https://github.com/diaoshihao/Specs.git'
+#source 'https://github.com/CocoaPods/Specs.git'
                        DESC
 
   s.homepage         = 'https://github.com/diaoshihao/ForeasyComponents'
@@ -33,7 +33,8 @@ source 'https://github.com/CocoaPods/Specs.git'
   s.source           = { :git => 'https://github.com/diaoshihao/ForeasyComponents.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
+  s.swift_versions = '5.0'
 
   s.source_files = 'Source/**/*'
   
