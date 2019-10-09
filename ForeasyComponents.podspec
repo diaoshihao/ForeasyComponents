@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'ForeasyComponents'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of ForeasyComponents.'
+  s.summary          = '和易科技有限公司项目组件（iOS-Swift）'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -19,6 +19,11 @@ Pod::Spec.new do |s|
 
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
+和易科技有限公司项目组件（iOS-Swift）
+依赖库 'SwiftyExtensions'
+请在 Podfile 文件中添加:
+source 'https://github.com/diaoshihao/Specs.git'
+source 'https://github.com/CocoaPods/Specs.git'
                        DESC
 
   s.homepage         = 'https://github.com/diaoshihao/ForeasyComponents'
@@ -30,7 +35,7 @@ TODO: Add long description of the pod here.
 
   s.ios.deployment_target = '8.0'
 
-  s.source_files = 'ForeasyComponents/Classes/**/*'
+  s.source_files = 'Source/**/*'
   
   # s.resource_bundles = {
   #   'ForeasyComponents' => ['ForeasyComponents/Assets/*.png']
@@ -38,5 +43,5 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+   s.dependency 'SwiftyExtensions'
 end
