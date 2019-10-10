@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ForeasyComponents'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = '和易科技有限公司项目组件（iOS-Swift）'
 
 # This description is used to generate tags and improve search results.
@@ -40,6 +40,7 @@ TODO: Add long description of the pod here.
     ex.source_files = 'ForeasyComponents/Classes/Extensions/*.swift'
   end
 
+  
   # s.resource_bundles = {
   #   'ForeasyComponents' => ['ForeasyComponents/Assets/*.png']
   # }
