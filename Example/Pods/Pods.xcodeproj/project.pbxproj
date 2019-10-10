@@ -277,6 +277,7 @@
 		5A341554FB3C6714ADA6369A14915AA5 /* ForeasyComponents */ = {
 			isa = PBXGroup;
 			children = (
+				D1863DA7234DE6840051388A /* Dependency.swift */,
 				D1863DA1234DE6030051388A /* Source */,
 				A2EE7624DD0E47B5EBA1B7A87F952EA5 /* Pod */,
 				6F3604AEA261F79A2A842574D63E5C92 /* Support Files */,
@@ -444,7 +445,6 @@
 		D1863DA1234DE6030051388A /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D1863DA7234DE6840051388A /* Dependency.swift */,
 				D1863DA2234DE6030051388A /* Toast */,
 			);
 			path = Source;
