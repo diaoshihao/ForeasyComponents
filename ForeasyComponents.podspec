@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ForeasyComponents'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = '和易科技有限公司项目组件（iOS-Swift）'
 
 # This description is used to generate tags and improve search results.
