@@ -37,7 +37,7 @@ TODO: Add long description of the pod here.
   s.swift_versions = '5.0'
   
   s.subspec 'Extensions' do |ex|
-    ex.source_files = 'ForeasyComponents/Extensions/*.swift'
+    ex.source_files = 'ForeasyComponents/Extensions/*'
   end
 
   # s.resource_bundles = {

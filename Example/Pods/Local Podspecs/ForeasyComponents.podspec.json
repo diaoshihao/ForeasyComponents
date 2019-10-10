@@ -27,7 +27,7 @@
   "subspecs": [
     {
       "name": "Extensions",
-      "source_files": "ForeasyComponents/Extensions/*.swift"
+      "source_files": "Classes/*"
     }
   ],
   "swift_version": "5.0"
