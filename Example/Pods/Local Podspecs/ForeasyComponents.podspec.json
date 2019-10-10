@@ -1,8 +1,8 @@
 {
   "name": "ForeasyComponents",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "summary": "和易科技有限公司项目组件（iOS-Swift）",
-  "description": "TODO: Add long description of the pod here.\n#和易科技有限公司项目组件（iOS-Swift）\n#依赖库 'SwiftyExtensions'\n#请在 Podfile 文件中添加:\n#source 'https://github.com/diaoshihao/Specs.git'\n#source 'https://github.com/CocoaPods/Specs.git'",
+  "description": "TODO: Add long description of the pod here.\n#和易科技有限公司项目组件（iOS-Swift）\n#请在 Podfile 文件中添加:\n#source 'https://github.com/diaoshihao/Specs.git'\n#source 'https://github.com/CocoaPods/Specs.git'",
   "homepage": "https://github.com/diaoshihao/ForeasyComponents",
   "license": {
     "type": "MIT",
@@ -13,21 +13,28 @@
   },
   "source": {
     "git": "https://github.com/diaoshihao/ForeasyComponents.git",
-    "tag": "0.1.0"
+    "tag": "0.1.1"
   },
   "platforms": {
     "ios": "9.0"
   },
   "swift_versions": "5.0",
-  "dependencies": {
-    "SnapKit": [
-
-    ]
-  },
   "subspecs": [
     {
       "name": "Extensions",
-      "source_files": "Classes/*"
+      "source_files": "ForeasyComponents/Classes/Extensions/**/*.swift"
+    },
+    {
+      "name": "ViewControl",
+      "source_files": "ForeasyComponents/Classes/ViewControl/**/*.swift",
+      "dependencies": {
+        "SnapKit": [
+
+        ],
+        "ForeasyComponents/Extensions": [
+
+        ]
+      }
     }
   ],
   "swift_version": "5.0"

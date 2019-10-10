@@ -4,10 +4,12 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - ForeasyComponents (0.1.0):
-    - ForeasyComponents/Extensions (= 0.1.0)
-    - SnapKit
-  - ForeasyComponents/Extensions (0.1.0):
+  - ForeasyComponents (0.1.1):
+    - ForeasyComponents/Extensions (= 0.1.1)
+    - ForeasyComponents/ViewControl (= 0.1.1)
+  - ForeasyComponents/Extensions (0.1.1)
+  - ForeasyComponents/ViewControl (0.1.1):
+    - ForeasyComponents/Extensions
     - SnapKit
   - SnapKit (4.2.0)
 
@@ -26,7 +28,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  ForeasyComponents: 43623f7fb5de0a13852f0f154212bf23f63fe792
+  ForeasyComponents: 04230128f519a2b95f4bcc93969b0095431b8992
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
 
 PODFILE CHECKSUM: 5de47fd03b6a1cfae84b404633b595d9f0b2ba33

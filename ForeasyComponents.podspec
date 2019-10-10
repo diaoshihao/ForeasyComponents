@@ -20,7 +20,6 @@ Pod::Spec.new do |s|
   s.description      = <<-DESC
 TODO: Add long description of the pod here.
 #和易科技有限公司项目组件（iOS-Swift）
-#依赖库 'SwiftyExtensions'
 #请在 Podfile 文件中添加:
 #source 'https://github.com/diaoshihao/Specs.git'
 #source 'https://github.com/CocoaPods/Specs.git'
@@ -37,9 +36,14 @@ TODO: Add long description of the pod here.
   s.swift_versions = '5.0'
   
   s.subspec 'Extensions' do |ex|
-    ex.source_files = 'ForeasyComponents/Classes/Extensions/*.swift'
+    ex.source_files = 'ForeasyComponents/Classes/Extensions/**/*.swift'
   end
-
+  
+  s.subspec 'ViewControl' do |control|
+    control.source_files = 'ForeasyComponents/Classes/ViewControl/**/*.swift'
+    control.dependency 'SnapKit'
+    control.dependency 'ForeasyComponents/Extensions'
+  end
   
   # s.resource_bundles = {
   #   'ForeasyComponents' => ['ForeasyComponents/Assets/*.png']
@@ -47,5 +51,4 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-   s.dependency 'SnapKit'
 end
