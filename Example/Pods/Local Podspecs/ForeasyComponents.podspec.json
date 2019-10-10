@@ -19,11 +19,23 @@
     "ios": "9.0"
   },
   "swift_versions": "5.0",
-  "source_files": "Source/**/*",
   "dependencies": {
+    "SnapKit": [
+
+    ],
     "SwiftyExtensions": [
 
     ]
   },
+  "subspecs": [
+    {
+      "name": "Source",
+      "source_files": "Source/**"
+    },
+    {
+      "name": "Toast",
+      "source_files": "Source/Toast"
+    }
+  ],
   "swift_version": "5.0"
 }

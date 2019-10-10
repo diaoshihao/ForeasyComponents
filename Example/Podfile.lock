@@ -5,7 +5,17 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - ForeasyComponents (0.1.0):
+    - ForeasyComponents/Source (= 0.1.0)
+    - ForeasyComponents/Toast (= 0.1.0)
+    - SnapKit
     - SwiftyExtensions
+  - ForeasyComponents/Source (0.1.0):
+    - SnapKit
+    - SwiftyExtensions
+  - ForeasyComponents/Toast (0.1.0):
+    - SnapKit
+    - SwiftyExtensions
+  - SnapKit (4.2.0)
   - SwiftyExtensions (0.1.0)
 
 DEPENDENCIES:
@@ -15,6 +25,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FBSnapshotTestCase
+    - SnapKit
   https://github.com/diaoshihao/Specs:
     - SwiftyExtensions
 
@@ -24,7 +35,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  ForeasyComponents: 08af5334031c177b906e003985ea021f36f81cab
+  ForeasyComponents: 3f47746723593f54173a2eb432808e05e4840e59
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftyExtensions: 29e07e5d2a0cea14adad26c6e9e3d417942890e2
 
 PODFILE CHECKSUM: 2e3f2d73b9c29461262c97e6e573dcf2cdd4acc4
