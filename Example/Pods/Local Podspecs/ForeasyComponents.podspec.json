@@ -22,19 +22,12 @@
   "dependencies": {
     "SnapKit": [
 
-    ],
-    "SwiftyExtensions": [
-
     ]
   },
   "subspecs": [
     {
-      "name": "Source",
-      "source_files": "Source/**"
-    },
-    {
-      "name": "Toast",
-      "source_files": "Source/Toast"
+      "name": "Extensions",
+      "source_files": "ForeasyComponents/Extensions/*.swift"
     }
   ],
   "swift_version": "5.0"

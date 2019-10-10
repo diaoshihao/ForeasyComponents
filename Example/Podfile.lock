@@ -5,18 +5,11 @@ PODS:
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
   - ForeasyComponents (0.1.0):
-    - ForeasyComponents/Source (= 0.1.0)
-    - ForeasyComponents/Toast (= 0.1.0)
+    - ForeasyComponents/Extensions (= 0.1.0)
     - SnapKit
-    - SwiftyExtensions
-  - ForeasyComponents/Source (0.1.0):
+  - ForeasyComponents/Extensions (0.1.0):
     - SnapKit
-    - SwiftyExtensions
-  - ForeasyComponents/Toast (0.1.0):
-    - SnapKit
-    - SwiftyExtensions
   - SnapKit (4.2.0)
-  - SwiftyExtensions (0.1.0)
 
 DEPENDENCIES:
   - FBSnapshotTestCase (~> 2.1.4)
@@ -26,8 +19,6 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - FBSnapshotTestCase
     - SnapKit
-  https://github.com/diaoshihao/Specs:
-    - SwiftyExtensions
 
 EXTERNAL SOURCES:
   ForeasyComponents:
@@ -35,10 +26,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  ForeasyComponents: 3f47746723593f54173a2eb432808e05e4840e59
+  ForeasyComponents: 71451865d6164bc29717cec9c71d592583e6bb73
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  SwiftyExtensions: 29e07e5d2a0cea14adad26c6e9e3d417942890e2
 
-PODFILE CHECKSUM: 2e3f2d73b9c29461262c97e6e573dcf2cdd4acc4
+PODFILE CHECKSUM: 5de47fd03b6a1cfae84b404633b595d9f0b2ba33
 
 COCOAPODS: 1.7.5
