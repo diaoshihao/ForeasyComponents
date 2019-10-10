@@ -50,22 +50,23 @@ extension HYTextFieldDelegate {
 }
 
 extension HYTextField {
+    
+    enum LimitStyle {
+        case none               // 无限制
+        case length(len: UInt)  // 限制长度
+        case number(lower: Double?, upper: Double?, type: LimitNumberType) // 限制大小（上下限）
+    }
+    
     enum LimitNumberType {
         case integer             // 整数
         case decimal(place: Int) // 小数，place: 小数点位数，小于0 不限制位数
     }
     
-    enum LimitStyle {
-        case none
-        case length(len: UInt)
-        case number(lower: Double?, upper: Double?, type: LimitNumberType)
-    }
-    
     enum LimitInfoType {
-        case length(len: UInt)
-        case decimal(place: Int)
-        case outOfBounds(bounds: Double, isUpper: Bool)
-        case invalidate(string: String)
+        case length(len: UInt)      // 超出长度
+        case decimal(place: Int)    // 超出小数点位数
+        case outOfBounds(bounds: Double, isUpper: Bool)     // 超出数字范围
+        case invalidate(string: String)     // 非法输入(如数字输入下输入字母等)
     }
 }
 

@@ -85,9 +85,10 @@ class HYPickerDefaultTitleView : UIView {
         label.font = self.titleFont
         label.textColor = self.titleColor
         addSubview(label)
-        label.topAnchor.constraint(equalTo: self.topAnchor)
-        label.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        label.centerXAnchor.constraint(equalTo: self.centerXAnchor)
+        label.snp.makeConstraints { (make) in
+            make.top.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+        }
         return label
     }()
 }
@@ -158,12 +159,9 @@ extension HYPickerView {
         let superview = UIApplication.shared.keyWindow!
         superview.addSubview(self)
         
-        translatesAutoresizingMaskIntoConstraints = false
-        topAnchor.constraint(equalTo: superview.topAnchor).isActive = true
-        leftAnchor.constraint(equalTo: superview.leftAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: superview.bottomAnchor).isActive = true
-        rightAnchor.constraint(equalTo: superview.rightAnchor).isActive = true
-
+        snp.makeConstraints { (make) in
+            make.edges.equalTo(0)
+        }
     }
 }
 
@@ -195,28 +193,23 @@ extension HYPickerView {
             height = CGFloat(fixedHeight)
         }
         
-        var left: CGFloat = 0
-        var right: CGFloat = 0
         if #available(iOS 11.0, *) {
-            left = safeAreaInsets.left
-            right = safeAreaInsets.right
             height += safeAreaInsets.bottom
         }
         
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.leftAnchor.constraint(equalTo: leftAnchor, constant: left).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        contentView.rightAnchor.constraint(equalTo: rightAnchor, constant: right).isActive = true
-        contentView.heightAnchor.constraint(equalToConstant: CGFloat(height)).isActive = true
-        
+        contentView.snp.makeConstraints { (make) in
+            make.left.equalTo(snp.leftMargin)
+            make.right.equalTo(snp.rightMargin)
+            make.height.equalTo(height)
+            make.bottom.equalToSuperview()
+        }
         
         contentView.addSubview(titleView)
         
-        titleView.translatesAutoresizingMaskIntoConstraints = false
-        titleView.heightAnchor.constraint(equalToConstant: titleView.height)
-        titleView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        titleView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        titleView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        titleView.snp.makeConstraints { (make) in
+            make.height.equalTo(titleView.height)
+            make.top.left.right.equalToSuperview()
+        }
         
         for (index, _) in dataArr.enumerated() {
             let tableview = UITableView(frame: .zero, style: .plain)
@@ -237,12 +230,9 @@ extension HYPickerView {
         stack.distribution = .fillEqually
         contentView.addSubview(stack)
         
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        stack.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        stack.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        
+        stack.snp.makeConstraints { (make) in
+            make.edges.equalTo(0)
+        }
     }
 }
 
