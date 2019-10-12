@@ -1,55 +1,50 @@
 //
-//  HYNormalPicker.swift
-//  HYLibarary
+//  FCNormalPicker.swift
+//  ForeasyComponents
 //
 //  Created by 刁世浩 on 2019/9/20.
 //  Copyright © 2019 刁世浩. All rights reserved.
 //
 
-import UIKit
 
-class HYNormalPicker: HYPickerView {
-    
-}
-
-protocol HYPickerDisplay {
+protocol FCPickerDisplay {
     func show()
     func hide()
     
     func prepareForShow()
 }
 
-protocol HYPickerHeader: UIView {
+protocol FCPickerHeader: UIView {
     var height: CGFloat { get }
 }
 
-protocol HYPickerFooter: UIView {
+protocol FCPickerFooter: UIView {
     var height: CGFloat { get }
 }
 
-protocol HYPickerContent: UIView {
+protocol FCPickerContent: UIView {
     var height: CGFloat { get }
 }
 
-extension HYPickerHeader {
+extension FCPickerHeader {
     var height: CGFloat { return 0.0 }
 }
-extension HYPickerFooter {
+extension FCPickerFooter {
     var height: CGFloat { return 0.0 }
 }
-extension HYPickerContent {
+extension FCPickerContent {
     var height: CGFloat { return 0.0 }
 }
 
-class HYBasePicker: UIViewController {
+class FCBasePicker: UIViewController {
     enum DisplayType {
         case window
         case present
     }
     
-    var headerView: HYPickerHeader?
-    var footerView: HYPickerFooter?
-    var contentView: HYPickerContent?
+    var headerView: FCPickerHeader?
+    var footerView: FCPickerFooter?
+    var contentView: FCPickerContent?
     let displayType = DisplayType.window
     
     var tapBackgroundHide = true
@@ -68,7 +63,7 @@ class HYBasePicker: UIViewController {
     }
 }
 
-extension HYBasePicker: HYPickerDisplay {
+extension FCBasePicker: FCPickerDisplay {
     func prepareForShow() {
         let pickBackgroudView = UIView()
         view.addSubview(pickBackgroudView)
@@ -132,7 +127,7 @@ extension HYBasePicker: HYPickerDisplay {
     }
 }
 
-extension HYBasePicker {
+extension FCBasePicker {
     enum Display {
         case window
         case present

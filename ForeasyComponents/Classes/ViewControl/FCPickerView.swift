@@ -1,14 +1,13 @@
 //
-//  HYPickerView.swift
-//  HYLibarary
+//  FCPickerView.swift
+//  ForeasyComponents
 //
 //  Created by 刁世浩 on 2019/9/19.
 //  Copyright © 2019 刁世浩. All rights reserved.
 //
 
-import UIKit
 
-extension HYPickerView {
+extension FCPickerView {
     /// 选择器内容模式，自适应高度、显示行数、固定高度
     enum PickerContentMode {
         case adaptive(scrollEnable: Bool)
@@ -17,8 +16,8 @@ extension HYPickerView {
     }
 }
 
-extension HYPickerView {
-    class HYPickerViewCell : UITableViewCell {
+extension FCPickerView {
+    class FCPickerViewCell : UITableViewCell {
         let titleLabel = UILabel()
         
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -39,12 +38,12 @@ extension HYPickerView {
     }
 }
 
-protocol HYPickerDelegate : NSObjectProtocol {
+protocol FCPickerDelegate : NSObjectProtocol {
     func didSelectRow(at index: Int, component: Int, text: String)
 }
 
 /// 标题视图协议
-protocol HYPickerTitleView : UIView {
+protocol FCPickerTitleView : UIView {
     var title: String? { get }
     var titleFont: UIFont? { get }
     var titleColor: UIColor? { get }
@@ -61,7 +60,7 @@ protocol HYPickerTitleView : UIView {
     
 }
 
-extension HYPickerTitleView {
+extension FCPickerTitleView {
     var title: String? { return nil }
     var titleFont: UIFont? { return nil }
     var titleColor: UIColor? { return nil }
@@ -78,7 +77,7 @@ extension HYPickerTitleView {
     
 }
 
-class HYPickerDefaultTitleView : UIView {
+class FCPickerDefaultTitleView : UIView {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = self.title
@@ -93,18 +92,18 @@ class HYPickerDefaultTitleView : UIView {
     }()
 }
 
-extension HYPickerDefaultTitleView : HYPickerTitleView {
+extension FCPickerDefaultTitleView : FCPickerTitleView {
     
 }
 
-class HYPickerView : UIControl {
+class FCPickerView : UIControl {
     
-    weak var delegate: HYPickerDelegate?
+    weak var delegate: FCPickerDelegate?
     
     var pickerTextFont: UIFont?
     var pickerTintColor: UIColor?
     
-    var titleView: HYPickerTitleView = HYPickerDefaultTitleView()
+    var titleView: FCPickerTitleView = FCPickerDefaultTitleView()
     
     var isShowRowSeperator: Bool = true
     
@@ -148,7 +147,7 @@ class HYPickerView : UIControl {
     }
 }
 
-extension HYPickerView {
+extension FCPickerView {
     @objc func hide() {
         removeFromSuperview()
     }
@@ -165,7 +164,7 @@ extension HYPickerView {
     }
 }
 
-extension HYPickerView {
+extension FCPickerView {
     func prepareForShowInWindow() {
         configPickerView()
     }
@@ -220,7 +219,7 @@ extension HYPickerView {
             tableview.isScrollEnabled = isScrollEnable
             tableview.separatorInset = .zero
             tableview.separatorStyle = isShowRowSeperator ? .singleLine : .none
-            tableview.register(HYPickerViewCell.classForCoder(), forCellReuseIdentifier: "HYPickerView")
+            tableview.register(FCPickerViewCell.classForCoder(), forCellReuseIdentifier: "FCPickerView")
             tableViews.append(tableview)
         }
         
@@ -236,7 +235,7 @@ extension HYPickerView {
     }
 }
 
-extension HYPickerView : UITableViewDelegate {
+extension FCPickerView : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let component = tableView.tag - tagStart
         if component >= dataArr.count { return }
@@ -246,7 +245,7 @@ extension HYPickerView : UITableViewDelegate {
     }
 }
 
-extension HYPickerView : UITableViewDataSource {
+extension FCPickerView : UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -262,7 +261,7 @@ extension HYPickerView : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "HYPickerView") as! HYPickerViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "FCPickerView") as! FCPickerViewCell
         
         let component = tableView.tag - tagStart
         if component >= dataArr.count { return cell }

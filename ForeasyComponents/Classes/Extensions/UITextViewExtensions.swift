@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HYTextView: UITextView {
+class FCTextView: UITextView {
     lazy var placeholderLabel: UILabel? = {
         let placeholderLabel = UILabel()
         placeholderLabel.numberOfLines = 0

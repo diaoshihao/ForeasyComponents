@@ -1,6 +1,6 @@
 {
   "name": "ForeasyComponents",
-  "version": "0.1.1",
+  "version": "0.1.5",
   "summary": "和易科技有限公司项目组件（iOS-Swift）",
   "description": "TODO: Add long description of the pod here.\n#和易科技有限公司项目组件（iOS-Swift）\n#请在 Podfile 文件中添加:\n#source 'https://github.com/diaoshihao/Specs.git'\n#source 'https://github.com/CocoaPods/Specs.git'",
   "homepage": "https://github.com/diaoshihao/ForeasyComponents",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/diaoshihao/ForeasyComponents.git",
-    "tag": "0.1.1"
+    "tag": "0.1.5"
   },
   "platforms": {
     "ios": "9.0"

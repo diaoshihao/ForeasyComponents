@@ -1,55 +1,54 @@
 //
-//  HYTextField.swift
-//  HYLibarary
+//  FCTextField.swift
+//  ForeasyComponents
 //
 //  Created by 刁世浩 on 2019/9/17.
 //  Copyright © 2019 刁世浩. All rights reserved.
 //
 
-import UIKit
 
-protocol HYTextFieldDelegate: NSObjectProtocol {
-    func textFieldDidChangeText(_ textField: HYTextField)
+public protocol FCTextFieldDelegate: NSObjectProtocol {
+    func textFieldDidChangeText(_ textField: FCTextField)
     
-    func textFieldDidEndEditing(_ textField: HYTextField)
+    func textFieldDidEndEditing(_ textField: FCTextField)
     
-    func textFieldDidBeginEditing(_ textField: HYTextField)
+    func textFieldDidBeginEditing(_ textField: FCTextField)
     
-    func textFieldShouldClear(_ textField: HYTextField) -> Bool
+    func textFieldShouldClear(_ textField: FCTextField) -> Bool
     
-    func textFieldShouldReturn(_ textField: HYTextField) -> Bool
+    func textFieldShouldReturn(_ textField: FCTextField) -> Bool
     
-    func textFieldShouldEndEditing(_ textField: HYTextField) -> Bool
+    func textFieldShouldEndEditing(_ textField: FCTextField) -> Bool
     
-    func textFieldShouldBeginEditing(_ textField: HYTextField) -> Bool
+    func textFieldShouldBeginEditing(_ textField: FCTextField) -> Bool
     
-    func textField(_ textField: HYTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    func textField(_ textField: FCTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     
-    func textFieldDidLimited(_ textField: HYTextField, limit: HYTextField.LimitInfoType)
+    func textFieldDidLimited(_ textField: FCTextField, limit: FCTextField.LimitInfoType)
     
 }
 
-extension HYTextFieldDelegate {
-    func textFieldDidChangeText(_ textField: HYTextField) { }
+public extension FCTextFieldDelegate {
+    func textFieldDidChangeText(_ textField: FCTextField) { }
     
-    func textFieldDidEndEditing(_ textField: HYTextField) { }
+    func textFieldDidEndEditing(_ textField: FCTextField) { }
     
-    func textFieldDidBeginEditing(_ textField: HYTextField) { }
+    func textFieldDidBeginEditing(_ textField: FCTextField) { }
     
-    func textFieldShouldClear(_ textField: HYTextField) -> Bool { return true }
+    func textFieldShouldClear(_ textField: FCTextField) -> Bool { return true }
     
-    func textFieldShouldReturn(_ textField: HYTextField) -> Bool { return true }
+    func textFieldShouldReturn(_ textField: FCTextField) -> Bool { return true }
     
-    func textFieldShouldEndEditing(_ textField: HYTextField) -> Bool { return true }
+    func textFieldShouldEndEditing(_ textField: FCTextField) -> Bool { return true }
     
-    func textFieldShouldBeginEditing(_ textField: HYTextField) -> Bool { return true }
+    func textFieldShouldBeginEditing(_ textField: FCTextField) -> Bool { return true }
     
-    func textField(_ textField: HYTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool { return true }
+    func textField(_ textField: FCTextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool { return true }
     
-    func textFieldDidLimited(_ textField: HYTextField, limit: HYTextField.LimitInfoType) { }
+    func textFieldDidLimited(_ textField: FCTextField, limit: FCTextField.LimitInfoType) { }
 }
 
-extension HYTextField {
+public extension FCTextField {
     
     enum LimitStyle {
         case none               // 无限制
@@ -70,13 +69,13 @@ extension HYTextField {
     }
 }
 
-class HYTextField: UITextField {
+public class FCTextField: UITextField {
 
-    var limit: LimitStyle = .none
+    public var limit: LimitStyle = .none
     
-    weak var hyDelegate: HYTextFieldDelegate?
+    public weak var hyDelegate: FCTextFieldDelegate?
     
-    override var delegate: UITextFieldDelegate? {
+    override public var delegate: UITextFieldDelegate? {
         set {
             super.delegate = self
         }
@@ -97,7 +96,7 @@ class HYTextField: UITextField {
     
 }
 
-extension HYTextField {
+extension FCTextField {
     @objc func textFieldEditingChange(_ textField: UITextField) {
         
         hyDelegate?.textFieldDidChangeText(self)
@@ -120,8 +119,8 @@ extension HYTextField {
     }
 }
 
-extension HYTextField: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+extension FCTextField: UITextFieldDelegate {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         // 删除
         if string.isEmpty {
@@ -207,7 +206,7 @@ extension HYTextField: UITextFieldDelegate {
     }
 }
 
-extension HYTextField {
+public extension FCTextField {
     func textFieldDidEndEditing(_ textField: UITextField) {
         hyDelegate?.textFieldDidEndEditing(self)
     }

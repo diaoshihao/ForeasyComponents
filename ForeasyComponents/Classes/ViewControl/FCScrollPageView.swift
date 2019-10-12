@@ -1,14 +1,13 @@
 //
-//  HYScrollPageView.swift
-//  HYLibarary
+//  FCScrollPageView.swift
+//  ForeasyComponents
 //
 //  Created by 刁世浩 on 2019/9/29.
 //  Copyright © 2019 刁世浩. All rights reserved.
 //
 
-import UIKit
 
-open class HYScrollPageView: UIView {
+open class FCScrollPageView: UIView {
 
     var currentIndex: Int = 0
     var viewControllers: [UIViewController] = []
@@ -35,7 +34,7 @@ open class HYScrollPageView: UIView {
     
 }
 
-extension HYScrollPageView: UIPageViewControllerDelegate {
+extension FCScrollPageView: UIPageViewControllerDelegate {
     public func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         if let vc = pendingViewControllers.first, let index = viewControllers.firstIndex(of: vc) {
             currentIndex = index
@@ -47,7 +46,7 @@ extension HYScrollPageView: UIPageViewControllerDelegate {
     }
 }
 
-extension HYScrollPageView: UIPageViewControllerDataSource {
+extension FCScrollPageView: UIPageViewControllerDataSource {
     public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         return viewControllers[currentIndex]
     }

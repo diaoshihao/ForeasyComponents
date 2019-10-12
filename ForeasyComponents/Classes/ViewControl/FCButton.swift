@@ -1,17 +1,16 @@
 //
-//  HYButton.swift
-//  HYLibarary
+//  FCButton.swift
+//  ForeasyComponents
 //
 //  Created by 刁世浩 on 2019/9/17.
 //  Copyright © 2019 刁世浩. All rights reserved.
 //
 
-import UIKit
 
-class HYButton: UIButton {
+public class FCButton: UIButton {
     
-    var space: CGFloat = 3.0
-    var style: ButtonStyle? {
+    public var space: CGFloat = 3.0
+    public var style: ButtonStyle? {
         didSet {
             setEdgeInsets(style: style ?? .left, space: space)
         }
@@ -21,18 +20,21 @@ class HYButton: UIButton {
         super.init(frame: .zero)
     }
     
-    convenience init(style buttonStyle: ButtonStyle?) {
-        self.init()
-        style = buttonStyle
-    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var frame: CGRect {
+    override public var frame: CGRect {
         didSet {
             setEdgeInsets(style: style ?? .left, space: space)
         }
+    }
+}
+
+public extension FCButton {
+    convenience init(style buttonStyle: ButtonStyle?) {
+        self.init()
+        style = buttonStyle
     }
 }

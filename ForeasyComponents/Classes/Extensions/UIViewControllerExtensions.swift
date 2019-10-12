@@ -101,7 +101,7 @@ public extension UIViewController {
     }
     
     #if os(iOS)
-    /// HYLibrary: Helper method to present a UIViewController as a popover.
+    /// Helper method to present a UIViewController as a popover.
     ///
     /// - Parameters:
     ///   - popoverContent: the view controller to add as a popover.
