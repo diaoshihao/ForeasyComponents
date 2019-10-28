@@ -33,4 +33,8 @@ public extension UIColor {
         self.init(hex: Int(hex.pointee), alpha: alpha)
     }
     
+    /// 随机颜色
+    static var random: UIColor {
+        return .init(hex: Int(arc4random() % 0xFFFFFF))
+    }
 }

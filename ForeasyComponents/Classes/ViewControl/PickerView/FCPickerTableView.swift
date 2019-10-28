@@ -1,0 +1,502 @@
+//
+//  FCPickerTableView.swift
+//  ForeasyComponents_Example
+//
+//  Created by 刁世浩 on 2019/10/21.
+//  Copyright © 2019 CocoaPods. All rights reserved.
+//
+
+import UIKit
+
+public protocol FCPickerStyle {
+    var rowHeight: CGFloat { get }
+    var pickerHeight: CGFloat? { get }
+    
+    var normalTextFont: UIFont? { get }
+    var selectedTextFont: UIFont? { get }
+    var normalTextColor: UIColor? { get }
+    var selectedTextColor: UIColor? { get }
+    
+    var isScrollEnable: Bool { get }
+    var isShowCenterLine: Bool { get }
+    var isShowRowSeperator: Bool { get }
+    var centerLineColor: UIColor? { get }
+    var shouldScrollToCenter: Bool { get }
+    
+}
+
+public extension FCPickerStyle {
+    var rowHeight: CGFloat { 44.0 }
+    var pickerHeight: CGFloat? { nil }
+    
+    var normalTextFont: UIFont? { nil }
+    var selectedTextFont: UIFont? { nil }
+    var normalTextColor: UIColor? { nil }
+    var selectedTextColor: UIColor? { nil }
+    
+    var isScrollEnable: Bool { true }
+    var isShowCenterLine: Bool { true }
+    var isShowRowSeperator: Bool { false }
+    var shouldScrollToCenter: Bool { true }
+    var centerLineColor: UIColor? { .systemGray }
+    
+}
+
+protocol FCPickerTableViewDataSource {
+    func numberOfComponents(in tableView: FCPickerTableView) -> Int
+    func tableView(_ tableView: FCPickerTableView, numberOfRowsInComponent component: Int) -> Int
+    func tableView(_ tableView: FCPickerTableView, titleForRowAtIndexPath indexPath: IndexPath) -> String
+}
+
+protocol FCPickerTableViewDelegate {
+    func tableView(_ tableView: FCPickerTableView, willSelectRowAtIndexPath indexPath: IndexPath)
+    func tableView(_ tableView: FCPickerTableView, willDeselectRowAtIndexPath indexPath: IndexPath)
+    func tableView(_ tableView: FCPickerTableView, didSelectRowAtIndexPath indexPath: IndexPath)
+    func tableView(_ tableView: FCPickerTableView, didDeselectRowAtIndexPath indexPath: IndexPath)
+}
+
+extension FCPickerTableViewDelegate {
+    func tableView(_ tableView: FCPickerTableView, willSelectRowAtIndexPath indexPath: IndexPath) { }
+    func tableView(_ tableView: FCPickerTableView, willDeselectRowAtIndexPath indexPath: IndexPath) { }
+    func tableView(_ tableView: FCPickerTableView, didSelectRowAtIndexPath indexPath: IndexPath) { }
+    func tableView(_ tableView: FCPickerTableView, didDeselectRowAtIndexPath indexPath: IndexPath) { }
+}
+
+
+struct FCPickerDefaultStyle: FCPickerStyle { }
+
+class FCPickerTableView: UIView {
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: Application.width, height: _style.pickerHeight ?? _style.rowHeight * 5)
+    }
+    
+    var delegate: FCPickerTableViewDelegate? = nil
+    var dataSource: FCPickerTableViewDataSource? = nil
+    private(set) var selectedIndexPath: [IndexPath] = []
+    
+    
+    var _style: FCPickerStyle
+    var _tableViews: [UITableView] = []
+    
+    let _tableViewTag: Int = 100
+    let _stackView = UIStackView()
+    
+    let _topSeperator = UIView()
+    let _bottomSeperator = UIView()
+        
+    init(with style: FCPickerStyle = FCPickerDefaultStyle()) {
+        _style = style
+        super.init(frame: .zero)
+        backgroundColor = .white
+        
+        _stackView.axis = .horizontal
+        _stackView.alignment = .fill
+        _stackView.distribution = .fillEqually
+        addSubview(_stackView)
+        
+        _stackView.snp.makeConstraints { (make) in
+            make.top.equalTo(0)
+            make.left.equalTo(0)
+            make.right.equalTo(0)
+            make.bottomMargin.equalTo(snp.bottomMargin)
+        }
+        
+        if style.shouldScrollToCenter && _style.isShowCenterLine {
+            addCenterLine()
+        }
+    }
+    
+    func addCenterLine() {
+        _topSeperator.backgroundColor = _style.centerLineColor
+        _bottomSeperator.backgroundColor = _style.centerLineColor
+        addSubview(_topSeperator)
+        addSubview(_bottomSeperator)
+        
+        _topSeperator.snp.makeConstraints { (make) in
+            make.height.equalTo(1)
+            make.left.right.equalTo(0)
+            make.centerY.equalTo(_stackView).offset(-_style.rowHeight/2.0)
+        }
+        _bottomSeperator.snp.makeConstraints { (make) in
+            make.height.equalTo(1)
+            make.left.right.equalTo(0)
+            make.centerY.equalTo(_stackView).offset(_style.rowHeight/2.0)
+        }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        reloadAllComponents()
+        
+        resetTableViewInsets()
+        updateSeperatorIfNeed()
+        
+        DispatchQueue.main.async() {
+            self.keepSelectionPosition()
+        }
+    }
+    
+    /// 横竖屏切换时保持选中位置/初始化默认选中第一个
+    func keepSelectionPosition() {
+        // 没有数据
+        guard let components = self.dataSource?.numberOfComponents(in: self), components > 0 else { return }
+        
+        let indexPaths = (0 ..< components).map { (component) -> IndexPath? in
+            // 没有数据
+            guard let rows = self.dataSource?.tableView(self, numberOfRowsInComponent: component), rows > 0 else { return nil }
+            // 已选中且不超出范围
+            let selectedIndexPath = self.selectedIndexPath.first { $0.component == component && $0.row < rows }
+            
+            // 如果未选中默认选中第一个数据
+            return selectedIndexPath ?? IndexPath(row: 0, component: component)
+        }.compactMap { $0 }
+        
+        selectRows(at: indexPaths, animated: false)
+        
+        if !_style.shouldScrollToCenter {
+            reload(indexPaths: indexPaths)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension FCPickerTableView {
+    /// 刷新所有组
+    func reloadAllComponents() {
+        createTableViewIfNeed()
+        _tableViews.forEach { (tableView) in
+            tableView.reloadData()
+        }
+        invalidateIntrinsicContentSize()
+    }
+    
+    /// 刷新对应的组
+    func reload(components: [Int]) {
+        createTableViewIfNeed()
+        components.forEach { (component) in
+            if let tableView = tableView(atComponent: component) {
+                tableView.reloadData()
+            }
+        }
+        invalidateIntrinsicContentSize()
+    }
+    
+    /// 刷新对应单个位置的数据
+    func reload(indexPath: IndexPath) {
+        guard let tableView = tableView(atComponent: indexPath.component) else { return }
+        guard let avaliable = convertIndexPath(from: indexPath) else { return }
+        tableView.reloadRows(at: [avaliable], with: .none)
+    }
+    
+    /// 刷新对应位置数组的数据
+    func reload(indexPaths: [IndexPath]?) {
+        indexPaths?.forEach { (indexPath) in
+            reload(indexPath: indexPath)
+        }
+    }
+    
+    /// 设置选中对应位置
+    func selectRow(at indexPath: IndexPath?, animated: Bool) {
+        guard isAvaliable(indexPath: indexPath) else { return }
+        guard let indexPath = indexPath else { return }
+        
+        // 修正显示位置
+        correntContentOffset(at: indexPath, animated: animated)
+        
+        // 选中该位置
+        select(indexPath: indexPath)
+    }
+    
+    /// 设置选中对应位置数组
+    func selectRows(at indexPaths: [IndexPath]?, animated: Bool) {
+        indexPaths?.forEach({ (indexPath) in
+            selectRow(at: indexPath, animated: animated)
+        })
+    }
+}
+
+extension FCPickerTableView {
+    
+    /// 根据 component 返回 tableview
+    func tableView(atComponent component: Int) -> UITableView? {
+        if component < _tableViews.count {
+            return _tableViews[component]
+        }
+        return nil
+    }
+    
+    /// 将 indexPath 转为对应 tableview 适用的 indexPath
+    func convertIndexPath(from indexPath: IndexPath?) -> IndexPath? {
+        guard let indexPath = indexPath else { return nil }
+        return isAvaliable(indexPath: indexPath) ? IndexPath(row: indexPath.row, section: 0) : nil
+    }
+    
+    /// 判断 indexPath 是否有效
+    func isAvaliable(indexPath: IndexPath?) -> Bool {
+        guard let indexPath = indexPath else { return false }
+        guard let components = dataSource?.numberOfComponents(in: self), indexPath.component < components else { return false }
+        guard let rows = dataSource?.tableView(self, numberOfRowsInComponent: indexPath.component), indexPath.row < rows else { return false }
+        return true
+    }
+    
+    /// 添加 indexPath 到选中数组
+    func select(indexPath: IndexPath) {
+        if selectedIndexPath.contains(indexPath) { return }
+        
+        // 移除与当前选择相同 component 的元素
+        if let willRemoveIndexPath = (selectedIndexPath.first { $0.component == indexPath.component }) {
+            // 即将取消选中
+            delegate?.tableView(self, willDeselectRowAtIndexPath: willRemoveIndexPath)
+            // 移除选中
+            selectedIndexPath.removeAll { $0.component == willRemoveIndexPath.component
+            }
+            // 已取消选中
+            delegate?.tableView(self, didDeselectRowAtIndexPath: willRemoveIndexPath)
+        }
+        
+        // 即将选中
+        delegate?.tableView(self, willSelectRowAtIndexPath: indexPath)
+        // 选中
+        selectedIndexPath.append(indexPath)
+        // 已选中
+        delegate?.tableView(self, didSelectRowAtIndexPath: indexPath)
+    }
+    
+    /// 创建 tableview
+    func createTableViewIfNeed() {
+        let number = dataSource?.numberOfComponents(in: self) ?? 0
+        if _tableViews.count > number {
+            for index in number ..< _tableViews.count {
+                _tableViews.remove(at: index)
+            }
+        }
+        if _tableViews.count < number {
+            for index in _tableViews.count ..< number {
+                if let tableView = createTableView(with: index) {
+                    _tableViews.append(tableView)
+                    _stackView.addArrangedSubview(tableView)
+                }
+            }
+        }
+    }
+    
+    /// 根据 component 创建 tableview
+    func createTableView(with component: Int) -> UITableView? {
+        let number = dataSource?.numberOfComponents(in: self) ?? 0
+        
+        if component >= number {
+            return nil
+        }
+        if component < _tableViews.count {
+            return _tableViews[component]
+        }
+        
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.tag = component + _tableViewTag
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.scrollsToTop = false
+        tableView.separatorInset = .zero
+        tableView.tableFooterView = UIView()
+        tableView.showsVerticalScrollIndicator = false
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.isScrollEnabled = _style.isScrollEnable
+        tableView.separatorStyle = _style.isShowRowSeperator ? .singleLine : .none
+        tableView.registerReusableCell(class: FCPickerCell.self)
+        
+        return tableView
+    }
+    
+    /// 更新中间分割线位置
+    func updateSeperatorIfNeed() {
+        if !_style.isShowCenterLine || !_style.shouldScrollToCenter { return }
+        if _topSeperator.superview == nil || _bottomSeperator.superview == nil {
+            return
+        }
+        
+        _topSeperator.snp.updateConstraints { (make) in
+            make.centerY.equalTo(_stackView).offset(-_style.rowHeight/2.0)
+        }
+        _bottomSeperator.snp.updateConstraints { (make) in
+            make.centerY.equalTo(_stackView).offset(_style.rowHeight/2.0)
+        }
+    }
+    
+    /// 根据类型设置 insets
+    func resetTableViewInsets() {
+        guard _style.shouldScrollToCenter else { return }
+        
+        _tableViews.forEach { (tableView) in
+            tableView.contentInset.top = intrinsicContentSize.height / 2.0 - _style.rowHeight / 2.0
+            tableView.contentInset.bottom = intrinsicContentSize.height / 2.0 - _style.rowHeight / 2.0
+        }
+    }
+    
+    /// 修正 contentOffset，使 indexPath 对应的 cell 恰好在中间
+    func correntContentOffset(at indexPath: IndexPath?, animated: Bool) {
+        guard _style.shouldScrollToCenter else { return }
+        guard let indexPath = indexPath else { return }
+        
+        guard let tableView = tableView(atComponent: indexPath.component) else { return }
+        guard let avaliableIndexPath = convertIndexPath(from: indexPath) else { return }
+        // indexPath 对应的区域
+        let rect = tableView.rectForRow(at: avaliableIndexPath)
+        // 计算适合的 contentOffset
+        var offset = rect.origin
+        offset = CGPoint(x: rect.origin.x, y: rect.origin.y - tableView.height/2.0)
+        offset = centerOffset(from: offset, inTableView: tableView)
+        
+        tableView.setContentOffset(offset, animated: animated)
+    }
+    
+    /// 从目标偏移量获取正好可以显示在中间所需要的偏移量
+    func centerOffset(from target: CGPoint, inTableView tableView: UITableView?) -> CGPoint {
+        guard let tableView = tableView else { return target }
+        
+        // 水平中心位置的 offset
+        let centerTarget = CGPoint(x: target.x, y: target.y + tableView.height/2.0)
+
+        // 水平中心位置的 indexPath
+        guard let indexPath = tableView.indexPathForRow(at: centerTarget) else {
+            return target
+        }
+
+        // 水平中心位置 cell 的坐标
+        let rect = tableView.rectForRow(at: indexPath)
+        
+        // 中心 cell 到中心位置的偏移量
+        let offset = centerTarget.y - _style.rowHeight/2.0 - rect.origin.y
+
+        // 当前所需的 contentOffset
+        return CGPoint(x: target.x, y: target.y - offset)
+    }
+}
+
+extension FCPickerTableView {
+    
+    /// 停止滚动后选中
+    func tableViewSelectWhileDidEndScroll(_ tableView: UITableView) {
+        let centerTarget = CGPoint(x: tableView.contentOffset.x, y: tableView.contentOffset.y + tableView.height/2.0)
+        
+        guard let indexPath = tableView.indexPathForRow(at: centerTarget) else {
+            return
+        }
+        guard let component = _tableViews.firstIndex(of: tableView) else { return }
+        let currentIndexPath = IndexPath(row: indexPath.row, component: component)
+        
+        selectRow(at: currentIndexPath, animated: false)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard _style.shouldScrollToCenter else { return }
+        
+        // 滑动到中间的 cell 高亮
+        guard let tableView = scrollView as? UITableView else { return }
+        
+        tableView.visibleCells.forEach { (cell) in
+            (cell as? FCPickerCell)?.titleLabel.font = _style.normalTextFont
+            (cell as? FCPickerCell)?.titleLabel.textColor = _style.normalTextColor
+        }
+        
+        let centerTarget = CGPoint(x: scrollView.contentOffset.x, y: scrollView.contentOffset.y + tableView.height/2.0)
+        guard let indexPath = tableView.indexPathForRow(at: centerTarget) else { return }
+        guard let cell = tableView.cellForRow(at: indexPath) as? FCPickerCell else { return }
+        
+        cell.titleLabel.font = _style.selectedTextFont
+        cell.titleLabel.textColor = _style.selectedTextColor
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard _style.shouldScrollToCenter else { return }
+        if let tableView = scrollView as? UITableView {
+            tableViewSelectWhileDidEndScroll(tableView)
+        }
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard _style.shouldScrollToCenter else { return }
+        if !decelerate, let tableView = scrollView as? UITableView {
+            tableViewSelectWhileDidEndScroll(tableView)
+        }
+    }
+        
+    // 设置 cell 刚好滑动到中间
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        guard _style.shouldScrollToCenter else { return }
+
+        let target = targetContentOffset.pointee
+        targetContentOffset.pointee = centerOffset(from: target, inTableView: scrollView as? UITableView)
+        
+    }
+}
+
+extension FCPickerTableView : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let component = tableView.tag - _tableViewTag
+        let currentIndexPath = IndexPath(row: indexPath.row, component: component)
+        let preIndexPath = selectedIndexPath.first { $0.component == component && $0.row != indexPath.row }
+        selectRow(at: currentIndexPath, animated: true)
+        
+        let indexPaths = [indexPath, convertIndexPath(from: preIndexPath)].compactMap { $0 }
+        tableView.reloadRows(at: indexPaths, with: .none)
+    }
+}
+
+extension FCPickerTableView : UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let component = tableView.tag - _tableViewTag
+        return dataSource?.tableView(self, numberOfRowsInComponent: component) ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return _style.rowHeight
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let component = tableView.tag - _tableViewTag
+        let cell = tableView.dequeueReusableCell(class: FCPickerCell.self)
+        cell.titleLabel.textAlignment = .center
+        
+        let currentIndexPath = IndexPath(row: indexPath.row, component: component)
+        
+        let title = dataSource?.tableView(self, titleForRowAtIndexPath: currentIndexPath)
+        cell.titleLabel.text = title
+        
+        if !_style.shouldScrollToCenter {
+            let isSelected = selectedIndexPath.contains { $0.component == component && $0.row == indexPath.row }
+            cell.titleLabel.font = isSelected ? _style.selectedTextFont : _style.normalTextFont
+            cell.titleLabel.textColor = isSelected ? _style.selectedTextColor : _style.normalTextColor
+        }
+        
+        return cell
+    }
+    
+}
+
+class FCPickerCell: UITableViewCell {
+    
+    let titleLabel = UILabel()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
+        
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { (make) in
+            make.edges.equalTo(0)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

@@ -14,6 +14,8 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		D16FE8DA2356BBC600386865 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = D16FE8D92356BBC600386865 /* Test.swift */; };
+		D19E41D72354611800A921A9 /* Development.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19E41D62354611800A921A9 /* Development.swift */; };
 		DBE025A81CD6B4F405974FF9 /* Pods_ForeasyComponents_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A7484251D375B66893D81B0 /* Pods_ForeasyComponents_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +49,8 @@
 		A67FB462977341AE36749DC4 /* Pods-ForeasyComponents_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeasyComponents_Example.release.xcconfig"; path = "Target Support Files/Pods-ForeasyComponents_Example/Pods-ForeasyComponents_Example.release.xcconfig"; sourceTree = "<group>"; };
 		AC048FD286DC14EA4C9002FF /* Pods-ForeasyComponents_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeasyComponents_Tests.debug.xcconfig"; path = "Target Support Files/Pods-ForeasyComponents_Tests/Pods-ForeasyComponents_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		B85DA818FB6B9C922D48DE52 /* Pods-ForeasyComponents_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ForeasyComponents_Example.debug.xcconfig"; path = "Target Support Files/Pods-ForeasyComponents_Example/Pods-ForeasyComponents_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		D16FE8D92356BBC600386865 /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		D19E41D62354611800A921A9 /* Development.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Development.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,7 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				D19E41D5235460E400A921A9 /* Development */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -157,6 +162,15 @@
 				690F64D7048E8A0FF1327762 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
+			sourceTree = "<group>";
+		};
+		D19E41D5235460E400A921A9 /* Development */ = {
+			isa = PBXGroup;
+			children = (
+				D16FE8D92356BBC600386865 /* Test.swift */,
+				D19E41D62354611800A921A9 /* Development.swift */,
+			);
+			name = Development;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -353,7 +367,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				D16FE8DA2356BBC600386865 /* Test.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				D19E41D72354611800A921A9 /* Development.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

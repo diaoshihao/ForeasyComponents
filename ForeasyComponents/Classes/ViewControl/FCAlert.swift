@@ -158,7 +158,6 @@ public struct FCAlertAction: FCActionType {
     public var style: FCActionStyle?
     
     public var handler: ActionHandler?
-    
 }
 
 public extension FCAlertAction {
@@ -429,7 +428,6 @@ extension FCAlertView {
             button.setTitleColor(titleColor, for: .normal)
             button.titleLabel?.font = action.font ?? appearance.actionFont
             button.addTarget(self, action: #selector(tapAction(_:)), for: .touchUpInside)
-//            actionBackgroudView.addSubview(button)
             tag += 1
             return button
         }
